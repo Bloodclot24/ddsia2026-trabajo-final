@@ -1,0 +1,47 @@
+Trabajo Final Integrador
+
+Diplomatura en Seguridad en Desarrollo e IA aplicada
+
+A lo largo de la cursada desarrollarán, de manera individual, un trabajo final integrador que
+reúne los contenidos de los distintos ejes de la diplomatura. El trabajo consiste en construir
+un servicio web con IA sobre un dominio acotado, desplegado, asegurado y documentado
+de principio a fin. El trabajo se desarrolla en un único repositorio Git público que irá
+creciendo durante toda la cursada.
+
+Consigna
+
+Construirán una API que responda preguntas o ejecute una tarea utilizando un LLM con
+RAG (Retrieval-Augmented Generation) sobre un conjunto de documentos que ustedes
+mismos elijan. El dominio es de elección libre, pero debe ser acotado y mantenerse fijo
+desde el inicio.
+
+A modo orientativo, algunos dominios posibles son: un asistente sobre la documentación de
+una librería; un asistente sobre políticas de privacidad o términos y condiciones (por
+ejemplo, para responder qué datos se recopilan según el documento); un asistente sobre
+las recetas de un libro de cocina o sobre las reglas de un juego de mesa complejo; o un
+asistente sobre un estándar técnico acotado (como la especificación de OAuth 2.0 o una
+guía de OWASP).
+
+Alcance
+
+Los siguientes elementos forman parte del alcance obligatorio:
+
+Una API HTTP con al menos un endpoint funcional que utilice el LLM.
+RAG básico: ingestión de documentos, embeddings, recuperación y generación.
+Uso de un LLM mediante una API externa o un modelo local.
+Empaquetado en contenedor.
+Pipeline de CI/CD mínimo (build, test y algún chequeo de calidad).
+Autenticación y control de acceso en la API.
+Rate limiting.
+Observabilidad básica (logs estructurados y al menos una métrica).
+Modelo de amenazas documentado (STRIDE).
+Mitigaciones de seguridad para IA (validación de entradas y salidas, guardrails).
+Hardening del contenedor (ejecución sin privilegios de root e imagen mínima).
+Un README que explique cómo ejecutar el proyecto y las decisiones de
+arquitectura adoptadas.
+
+Los siguientes elementos quedan fuera del alcance y no son obligatorios: un frontend (basta
+con que la API pueda probarse con curl, Swagger o Postman), múltiples dominios o fuentes
+de datos complejas, fine-tuning de modelos, infraestructura cloud real (es suficiente con
+ejecución local o en contenedor), y aspectos de alta disponibilidad, escalado o
+multi-tenancy.
