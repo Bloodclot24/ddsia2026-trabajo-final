@@ -1,7 +1,10 @@
-from fastapi import FastAPI
+from pydantic import BaseModel
+from app.rag import qa_system
 
-app = FastAPI(title="OT Cybersecurity Assistant API")
+class QueryRequest(BaseModel):
+    question: str
 
-@app.get("/")
-def read_root():
-    return {"status": "ok", "message": "Hello World - API Segura Inicializada"}
+@app.post("/ask")
+def ask_question(request: QueryRequest):
+    response = qa_system.invoke(request.question)
+    return {"answer": response["result"]}

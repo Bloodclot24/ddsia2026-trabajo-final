@@ -1,0 +1,4 @@
+Para la primera ejecución se debera considerar que debe descargarse el modelo Mistral dentro de Ollama para que el contendedor Docker configurado sea funcional.
+
+docker exec -it <nombre_contenedor_ollama> ollama run mistral
+
