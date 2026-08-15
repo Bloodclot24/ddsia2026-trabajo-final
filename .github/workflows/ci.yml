@@ -17,5 +17,5 @@ jobs:
       run: docker-compose build
     - name: Install test dependencies
       run: pip install pytest httpx
-    # Aquí irían los comandos para correr tus tests unitarios si los implementas
-    # run: pytest app/tests/
+    - name: Run tests
+      run: pytest app/test_main.py -v
