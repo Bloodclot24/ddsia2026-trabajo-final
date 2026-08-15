@@ -1,0 +1,21 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    - name: Verify Docker build
+      run: docker-compose build
+    - name: Install test dependencies
+      run: pip install pytest httpx
+    # Aquí irían los comandos para correr tus tests unitarios si los implementas
+    # run: pytest app/tests/
