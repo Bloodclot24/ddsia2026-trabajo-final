@@ -1,8 +1,7 @@
 FROM python:3.11-slim
 
-RUN useradd -m -r appuser && \
-    mkdir /app && \
-    chown -R appuser /app
+# Ejecutamos todo en una sola línea para evitar errores de CRLF (Windows) en Hadolint
+RUN useradd -m -r appuser && mkdir -p /app && chown -R appuser /app
 
 WORKDIR /app
 
@@ -14,4 +13,4 @@ COPY app/ ./app/
 USER appuser
 
 EXPOSE 8000
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]o
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
