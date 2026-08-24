@@ -1,17 +1,18 @@
 FROM python:3.11-slim
 
-# 1. Parcheo del Sistema Operativo: Actualiza los paquetes de Debian para mitigar los CVEs de util-linux
+# Parcheo del Sistema Operativo
 RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
 
-# 2. Creación del usuario sin privilegios (Hardening)
-# Mantenemos todo en una sola línea para evitar el error CRLF de Hadolint
+# Creación del usuario sin privilegios
 RUN useradd -m -r appuser && mkdir -p /app && chown -R appuser /app
 
 WORKDIR /app
 
 COPY requirements.txt .
 
-# 3. Parcheo de Python: Actualizamos las herramientas base antes de instalar las dependencias
+# Le indicamos a Hadolint que ignore la regla de fijar versiones aquí, 
+# ya que necesitamos las últimas actualizaciones de seguridad para Trivy.
+# hadolint ignore=DL3013
 RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
     pip install --no-cache-dir -r requirements.txt
 
