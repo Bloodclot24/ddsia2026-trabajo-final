@@ -11,26 +11,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout del código
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Configurar Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.11'
 
     - name: Crear carpeta docs (Workaround para Git)
       run: |
         mkdir -p app/docs
-        # Creamos un archivo de texto plano con extensión pdf para evitar que el loader falle
         echo "dummy content" > app/docs/dummy.pdf
 
-    - name: Instalar dependencias
+    - name: Actualizar pip e instalar dependencias
       run: |
+        python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install pytest httpx pytest-mock
 
     - name: Validar Build de Docker
-      run: docker-compose build
+      run: docker compose build
 
     - name: Ejecutar Tests Unitarios
-      run: pytest test_main.py -v
+      run: python -m pytest test_main.py -v
