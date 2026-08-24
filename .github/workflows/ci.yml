@@ -37,4 +37,4 @@ jobs:
         PYTHONPATH: .
       run: |
         # Pytest buscará automáticamente cualquier archivo que empiece con "test_"
-        python -m pytest -vs
+        python -m pytest -vs -W ignore

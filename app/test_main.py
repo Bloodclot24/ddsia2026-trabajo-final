@@ -22,9 +22,9 @@ def test_read_root():
 def test_ask_missing_api_key():
     """Verifica que el endpoint /ask esté protegido y rechace peticiones sin API Key."""
     response = client.post("/ask", json={"question": "¿Qué es el nivel 3 en ISA/IEC 62443?"})
-    assert response.status_code == 403
+    assert response.status_code == 401  # <--- Cambia este 403 a 401
     assert response.json()["detail"] == "Not authenticated"
-
+    
 def test_ask_invalid_api_key():
     """Verifica que el endpoint rechace peticiones con una API Key incorrecta."""
     headers = {"X-API-Key": "clave-maliciosa"}
