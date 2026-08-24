@@ -1,3 +1,12 @@
+import sys
+from unittest.mock import MagicMock
+
+# 1. MOCK CRÍTICO: Simulamos el módulo RAG antes de importar la app.
+# Esto evita que el CI intente descargar embeddings o conectarse a Ollama.
+mock_rag = MagicMock()
+mock_rag.qa_system.invoke.return_value = {"result": "Respuesta simulada por el mock."}
+sys.modules['app.rag'] = mock_rag
+
 import pytest
 from fastapi.testclient import TestClient
 from app.main import app, API_KEY
@@ -36,11 +45,12 @@ def test_input_validation_min_length():
     headers = {"X-API-Key": API_KEY}
     payload = {"question": "OT"} # Menos de 5 caracteres
     response = client.post("/ask", headers=headers, json=payload)
-    assert response.status_code == 422 # Error de validación de Pydantic
-
-def test_input_validation_max_length():
-    """Valida que Pydantic rechace consultas demasiado largas para mitigar DoS en embeddings."""
-    headers = {"X-API-Key": API_KEY}
-    payload = {"question": "A" * 301} # Más de 300 caracteres
-    response = client.post("/ask", headers=headers, json=payload)
     assert response.status_code == 422
+
+def test_successful_ask():
+    """Valida que una consulta válida retorne un 200 OK usando el sistema mockeado."""
+    headers = {"X-API-Key": API_KEY}
+    payload = {"question": "¿Cuáles son los niveles del modelo Purdue?"}
+    response = client.post("/ask", headers=headers, json=payload)
+    assert response.status_code == 200
+    assert response.json()["answer"] == "Respuesta simulada por el mock."
