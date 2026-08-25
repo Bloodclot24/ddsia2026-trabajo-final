@@ -1,5 +1,7 @@
 FROM python:3.11-slim
 
+FROM python:3.11-slim
+
 # Parcheo del Sistema Operativo
 RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
 
@@ -10,10 +12,12 @@ WORKDIR /app
 
 COPY requirements.txt .
 
-# Le indicamos a Hadolint que ignore la regla de fijar versiones aquí, 
-# ya que necesitamos las últimas actualizaciones de seguridad para Trivy.
+# Forzar las versiones seguras exigidas por Trivy añadiéndolas al requirements
+RUN echo "msgpack>=1.2.1" >> requirements.txt && \
+    echo "setuptools>=78.1.1" >> requirements.txt
+
 # hadolint ignore=DL3013
-RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
+RUN pip install --no-cache-dir --upgrade pip wheel && \
     pip install --no-cache-dir -r requirements.txt
 
 COPY app/ ./app/
