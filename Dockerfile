@@ -12,8 +12,9 @@ WORKDIR /app
 
 COPY requirements.txt .
 
-# Forzar las versiones seguras exigidas por Trivy añadiéndolas al requirements
-RUN echo "msgpack>=1.2.1" >> requirements.txt && \
+# Forzar un salto de línea previo para evitar concatenación con el último paquete
+RUN echo "" >> requirements.txt && \
+    echo "msgpack>=1.2.1" >> requirements.txt && \
     echo "setuptools>=78.1.1" >> requirements.txt
 
 # hadolint ignore=DL3013
