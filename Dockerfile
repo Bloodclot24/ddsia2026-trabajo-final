@@ -1,7 +1,5 @@
 FROM python:3.11-slim
 
-FROM python:3.11-slim
-
 # Parcheo del Sistema Operativo
 RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
 
@@ -12,14 +10,13 @@ WORKDIR /app
 
 COPY requirements.txt .
 
-# Forzar un salto de línea previo para evitar concatenación con el último paquete
-RUN echo "" >> requirements.txt && \
-    echo "msgpack>=1.2.1" >> requirements.txt && \
-    echo "setuptools>=78.1.1" >> requirements.txt
-
+# 1. Actualizamos pip
+# 2. Instalamos tu app normal
+# 3. FORZAMOS el parcheo de seguridad sobrescribiendo cualquier versión vieja
 # hadolint ignore=DL3013
-RUN pip install --no-cache-dir --upgrade pip wheel && \
-    pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir --upgrade "setuptools>=78.1.1" "wheel>=0.46.2" "msgpack>=1.2.1" "jaraco.context>=6.1.0"
 
 COPY app/ ./app/
 
