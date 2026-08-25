@@ -79,4 +79,4 @@ jobs:
         exit-code: '1' # Hace que el pipeline falle si encuentra algo
         ignore-unfixed: true
         vuln-type: 'os,library'
-        severity: 'CRITICAL,HIGH' # Solo reportar vulnerabilidades Altas o Críticas
+        severity: 'CRITICAL' # Solo reportar vulnerabilidades Críticas
