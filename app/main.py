@@ -1,3 +1,4 @@
+import os
 import logging
 from fastapi import FastAPI, HTTPException, Security, Request
 from fastapi.security import APIKeyHeader
@@ -11,14 +12,12 @@ from app.rag import qa_system
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-# Rate Limiting
-limiter = Limiter(key_func=get_remote_address)
-app = FastAPI(title="OT Cybersecurity Assistant API")
-app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+# Autenticación Segura (Variable de Entorno)
+API_KEY = os.getenv("API_KEY")
+if not API_KEY:
+    logger.critical("API_KEY no detectada en el entorno. Abortando inicio por seguridad.")
+    raise RuntimeError("La variable de entorno API_KEY es obligatoria.")
 
-# Autenticación
-API_KEY = "ddsia-ot-cyber-2026"
 api_key_header = APIKeyHeader(name="X-API-Key")
 
 def get_api_key(api_key: str = Security(api_key_header)):
@@ -26,7 +25,12 @@ def get_api_key(api_key: str = Security(api_key_header)):
         raise HTTPException(status_code=403, detail="Credenciales inválidas")
     return api_key
 
-# Mitigaciones de IA: Validación de inputs
+# Rate Limiting
+limiter = Limiter(key_func=get_remote_address)
+app = FastAPI(title="Technical Library Assistant API")
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
 class QueryRequest(BaseModel):
     question: str = Field(..., min_length=5, max_length=300)
 
@@ -35,11 +39,10 @@ def read_root():
     return {"status": "ok", "message": "API Operativa"}
 
 @app.post("/ask")
-@limiter.limit("5/minute") # Prevención de abuso / DoS
+@limiter.limit("5/minute")
 def ask_question(request: Request, query: QueryRequest, key: str = Security(get_api_key)):
     logger.info(f"Consulta recibida desde {request.client.host}")
     
-    # Guardrails: Mitigación de Prompt Injection básica
     forbidden_words = ["ignora", "instrucciones previas", "system prompt", "bypass"]
     if any(word in query.question.lower() for word in forbidden_words):
         logger.warning("Intento de inyección de prompt detectado.")

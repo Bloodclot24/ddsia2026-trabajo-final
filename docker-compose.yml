@@ -8,6 +8,8 @@ services:
       - ollama
     environment:
       - OLLAMA_BASE_URL=http://ollama:11434
+      # Docker Compose tomará el valor automáticamente del archivo .env
+      - API_KEY=${API_KEY} 
 
   ollama:
     image: ollama/ollama:latest
