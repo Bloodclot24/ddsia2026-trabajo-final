@@ -3,7 +3,7 @@ services:
   api:
     build: .
     ports:
-      - "8000:8000"
+      - "9000:9000"
     depends_on:
       - ollama
     environment:

@@ -11,12 +11,14 @@ WORKDIR /app
 COPY requirements.txt .
 
 # 1. Actualizamos pip
-# 2. Instalamos tu app normal
-# 3. FORZAMOS el parcheo de seguridad sobrescribiendo cualquier versión vieja
+# 2. Instalamos las versiones seguras de Trivy PRIMERO
+# 3. Forzamos PyTorch a usar CPU para evitar la descarga de 9GB de CUDA
+# 4. Instalamos las dependencias de la aplicación
 # hadolint ignore=DL3013
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt && \
-    pip install --no-cache-dir --upgrade "setuptools>=78.1.1" "wheel>=0.46.2" "msgpack>=1.2.1" "jaraco.context>=6.1.0" "setuptools>=78.1.1"
+    pip install --no-cache-dir "setuptools>=78.1.1" "msgpack>=1.2.1" "wheel>=0.46.2" "jaraco.context>=6.1.0" && \
+    pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu && \
+    pip install --no-cache-dir -r requirements.txt
 
 COPY app/ ./app/
 
