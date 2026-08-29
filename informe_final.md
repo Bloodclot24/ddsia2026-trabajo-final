@@ -189,16 +189,61 @@ Se elaboró y adjuntó en el repositorio el archivo **`THREAT_MODEL.md`**. En é
 
 ## 7. Resultados obtenidos de las herramientas de seguridad
 
-### 7.1. Hadolint
-![Captura Hadolint](img/hadolint.png)
+### 7.1. Gitleaks
+```bash
+name: Checkout del código
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0 # Necesario para que Gitleaks revise todo el historial
+
+    - name: 🕵️ Escaneo de Secretos (Gitleaks)
+      uses: gitleaks/gitleaks-action@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+![Captura Gitleaks](img/gitleaks.png)
 
 ### 7.2. Bandit
+
+```bash
+name: 🔍 Escaneo SAST para Python (Bandit)
+      run: |
+        pip install bandit
+        # Escanea la carpeta app/ buscando fallos de seguridad en el código
+        bandit -r app/ -ll -ii 
+```
 ![Captura Bandit](img/bandit.png)
-### 7.3. Gitleaks
-![Captura Gitleaks](img/gitleaks.png)
+
+### 7.3. Hadolint
+```bash
+name: 🐳 Linting del Dockerfile (Hadolint)
+      uses: hadolint/hadolint-action@v3.1.0
+      with:
+        dockerfile: Dockerfile
+```
+![Captura Hadolint](img/hadolint.png)
+
 ### 7.4. Pytest
+```bash
+name: 🚦 Ejecutar Tests Unitarios
+      env:
+        PYTHONPATH: .
+      run: python -m pytest -v -W ignore
+
+```
 ![Captura Pytest](img/pytest.png)
 ### 7.5. Trivy
+```bash
+name: ☢️ Escaneo de Vulnerabilidades del Contenedor (Trivy)
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: 'ddsia-api-local:latest'
+        format: 'table'
+        exit-code: '1' # Hace que el pipeline falle si encuentra algo
+        ignore-unfixed: true
+        vuln-type: 'os,library'
+        severity: 'CRITICAL' # Solo reportar vulnerabilidades Críticas
+```
 
 ![Captura Trivy](img/trivy.png)
 
@@ -216,5 +261,9 @@ Se elaboró y adjuntó en el repositorio el archivo **`THREAT_MODEL.md`**. En é
 | **Entorno Python 3.11** | `python-pkg` (85 librerías) | 0 | Ninguno | ✅ Limpio |
 
 ### 7.6 ZAP
+
+```bash
+docker run --rm -v $(pwd):/zap/wrk/:rw --network="host" -t zaproxy/zap-stable zap-full-scan.py -t http://localhost:8080 -r owasp-report.html
+```
 ![Captura ZAP](img/zap.png)
 ![Captura ZAP](img/zap1.png)
