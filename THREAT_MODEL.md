@@ -14,7 +14,12 @@ Este documento detalla el modelo de amenazas para la API del Asistente de Cibers
 Se utiliza el esquema de seguridad de FastAPI (`APIKeyHeader`) para interceptar y validar el token antes de procesar el endpoint.
 ```python
 # app/main.py
-API_KEY = "ddsia-ot-cyber-2026"
+ Autenticación Segura (Variable de Entorno)
+API_KEY = os.getenv("API_KEY")
+if not API_KEY:
+    logger.critical("API_KEY no detectada en el entorno. Abortando inicio por seguridad.")
+    raise RuntimeError("La variable de entorno API_KEY es obligatoria.")
+
 api_key_header = APIKeyHeader(name="X-API-Key")
 
 def get_api_key(api_key: str = Security(api_key_header)):
