@@ -190,19 +190,17 @@ Se elaboró y adjuntó en el repositorio el archivo **`THREAT_MODEL.md`**. En é
 ## 7. Resultados obtenidos de las herramientas de seguridad
 
 ### 7.1. Hadolint
-*   **Imagen Mínima:** Se utiliza `python:3.11-slim` como imagen base, reduciendo drásticamente la superficie de ataque.
-*   **Ejecución sin privilegios:** El `Dockerfile` crea un usuario específico (`appuser`) y cambia el contexto de ejecución (`USER appuser`) para garantizar que la aplicación y el LLM nunca corran con privilegios de administrador (*root*).
-*   **Parcheo Dinámico:** El contenedor actualiza sus paquetes base (`apt-get upgrade`) y fuerza las versiones seguras de librerías Python (`msgpack`, `setuptools`) en tiempo de compilación.
+![Captura Hadolint](img/hadolint.png)
 
 ### 7.2. Bandit
-![Captura Curl Testing](img/bandit.png)
+![Captura Bandit](img/bandit.png)
 ### 7.3. Gitleaks
-![Captura Curl Testing](img/gitleaks.png)
+![Captura Gitleaks](img/gitleaks.png)
 ### 7.4. Pytest
-![Captura Curl Testing](img/pytest.png)
+![Captura Pytest](img/pytest.png)
 ### 7.5. Trivy
 
-![Captura Curl Testing](img/trivy.png)
+![Captura Trivy](img/trivy.png)
 
 ### Resumen del Escaneo de Seguridad (Trivy)
 
@@ -218,5 +216,5 @@ Se elaboró y adjuntó en el repositorio el archivo **`THREAT_MODEL.md`**. En é
 | **Entorno Python 3.11** | `python-pkg` (85 librerías) | 0 | Ninguno | ✅ Limpio |
 
 ### 7.6 ZAP
-![Captura Curl Testing](img/zap.png)
-![Captura Curl Testing](img/zap1.png)
+![Captura ZAP](img/zap.png)
+![Captura ZAP](img/zap1.png)
