@@ -1,4 +1,7 @@
 # Informe del Trabajo Final Integrador: Asistente de Ciberseguridad OT
+**Fecha de Entrega:** 31/08/2026  
+**Autor:** Guido Ygounet  
+**Proyecto:** [ddsia2026-trabajo-final](https://github.com/Bloodclot24/ddsia2026-trabajo-final)
 
 La implementación de este asistente busca resolver el acceso ágil a la normativa IEC 62443 en entornos industriales, priorizando la confidencialidad de la red OT en la planta de manufactura mediante inferencia de inteligencia artificial operando íntegramente en el *edge*.
 
