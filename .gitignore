@@ -5,3 +5,4 @@ app/.DS_Store
 app/docs/OWASP-GenAI-LLM-Top-10-2026-v1.0.pdf
 generar_presentacion_final.py
 owasp-report.html
+informes/auditoria/.DS_Store
