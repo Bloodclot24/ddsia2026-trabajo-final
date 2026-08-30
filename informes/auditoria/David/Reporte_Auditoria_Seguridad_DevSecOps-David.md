@@ -61,7 +61,9 @@ Cuenta gratuita en sonarcloud.io. Resumen de analysis de auditoria.
 ```bash
 gitleaks detect --source . -r report.json -f json
 ```
+
 **Captura de pantalla (Secretos detectados o reporte limpio):**
+
 ![Captura Gitleaks](gitleaks.png)
 ---
 
