@@ -140,4 +140,4 @@ docker run --rm -v $(pwd):/zap/wrk/:rw --network="host" -t zaproxy/zap-stable za
 ![Captura ZAP](zap.png)
 ![Captura ZAP](zap1.png)
 ---
-*Reporte generado de acuerdo a los requerimientos del módulo de auditoría cruzada.*
+
